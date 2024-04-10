@@ -1,1 +1,24 @@
 /* TODO: Add sitewide styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body, html {
+  height: 100%;
+}
+
+
+h1, h2, h3 {
+  font-family: "Playfair Display", serif;
+}
+
+p, span, button, li, label, input, select {
+  font-family: "Manrope", sans-serif;
+}
+
+.main-content {
+    margin-left: 250px; /* Adjust this value to match the sidebar width */
+    padding: 20px; /* Add padding for spacing around the content */
+  }
