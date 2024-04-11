@@ -9,13 +9,56 @@ module.exports = (sequelize, DataTypes) => {
 		 */
 		static associate(models) {
 			Lead.belongsTo(models.User, {
-        foreignKey: "setterId"
-      });
-      Lead.belongsTo(models.User, {
-        foreignKey: "closerId"
-      });
+				foreignKey: "setterId",
+				as: "Setter",
+			});
+			Lead.belongsTo(models.User, {
+				foreignKey: "closerId",
+				as: "Closer",
+			});
+		}
+
+		static async getAllLeads() {
+			const leads = await Lead.findAll({
+				include: [
+					{
+						model: sequelize.models.User,
+						as: "Setter",
+						attributes: ["firstName", "lastName"],
+						where: { id: sequelize.col("Lead.setterId") },
+					},
+					{
+						model: sequelize.models.User,
+						as: "Closer",
+						attributes: ["firstName", "lastName"],
+						where: { id: sequelize.col("Lead.closerId") },
+					},
+				],
+			});
+			return leads;
+		}
+
+		static async getLeadById(leadId) {
+			const lead = await Lead.findByPk(leadId, {
+				include: [
+					{
+						model: sequelize.models.User,
+						as: "Setter",
+						attributes: ["firstName", "lastName"],
+						where: { id: sequelize.col("Lead.setterId") },
+					},
+					{
+						model: sequelize.models.User,
+						as: "Closer",
+						attributes: ["firstName", "lastName"],
+						where: { id: sequelize.col("Lead.closerId") },
+					},
+				],
+			})
+			return lead
 		}
 	}
+
 	Lead.init(
 		{
 			setterId: {
@@ -59,7 +102,7 @@ module.exports = (sequelize, DataTypes) => {
 					"Scheduled Callback",
 					"Unqualified"
 				),
-        allowNull: false
+				allowNull: false,
 			},
 		},
 		{
