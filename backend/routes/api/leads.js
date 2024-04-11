@@ -68,7 +68,7 @@ router.put("/:leadId", requireAuth, validateLead, async (req, res, next) => {
 		});
 
 		const setter = await User.findByPk(setterId);
-		let closer = null;
+		let closer = {};
 		if (closerId) {
 			closer = await User.findByPk(closerId);
 		}
@@ -81,7 +81,7 @@ router.put("/:leadId", requireAuth, validateLead, async (req, res, next) => {
 			},
 			closerId,
 			Closer: {
-				name: closer.firstName || null,
+				name: closer.firstName || "None",
 			},
 			name,
 			address,
