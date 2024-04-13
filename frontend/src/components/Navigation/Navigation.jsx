@@ -30,19 +30,16 @@ function Navigation({ isLoaded }) {
 	return (
 		<div className='sidebar'>
 			<div className='logo-container'>
-				{/* Place your logo here */}
 				<img src='https://brand.goaptive.com/wp-content/uploads/2023/10/white_logo.svg' alt='Logo' className='logo' />
 
 				{sessionUser && <p style={{ color: "white", fontWeight: "100" }}>Welcome, {sessionUser.firstName}</p>}
 
 				<nav className='nav-menu'>
 					{sessionUser && (
-						<NavLink to='/' exact activeClassName='active'>
-							Home
+						<NavLink to='/setter-transfers' exact activeClassName='active'>
+							Setter Transfers
 						</NavLink>
 					)}
-
-					{/* Add more NavLink components here */}
 				</nav>
 			</div>
 			{isLoaded && <div className='session-links'>{sessionLinks}</div>}

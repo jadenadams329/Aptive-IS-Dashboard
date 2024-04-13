@@ -32,6 +32,7 @@ module.exports = (sequelize, DataTypes) => {
 						as: "Closer",
 						attributes: ["firstName", "lastName"],
 						where: { id: sequelize.col("Lead.closerId") },
+						required: false
 					},
 				],
 			});
@@ -46,12 +47,14 @@ module.exports = (sequelize, DataTypes) => {
 						as: "Setter",
 						attributes: ["firstName", "lastName"],
 						where: { id: sequelize.col("Lead.setterId") },
+						required: false
 					},
 					{
 						model: sequelize.models.User,
 						as: "Closer",
 						attributes: ["firstName", "lastName"],
 						where: { id: sequelize.col("Lead.closerId") },
+						required: false
 					},
 				],
 			})

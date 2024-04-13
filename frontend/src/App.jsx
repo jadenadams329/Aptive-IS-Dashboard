@@ -5,6 +5,7 @@ import LoginFormPage from "./components/LoginFormPage/LoginFormPage";
 import SignupFormPage from "./components/SignUpFormPage/SignUpFormPage";
 import Navigation from "./components/Navigation/Navigation";
 import * as sessionActions from "./store/session";
+import SetterTransferPage from "./components/SetterTransferPage/SetterTransferPage";
 
 function Layout() {
 	const dispatch = useDispatch();
@@ -20,7 +21,7 @@ function Layout() {
     <>
     <Navigation isLoaded={isLoaded} />
     {isLoaded && (
-      <div className="main-content"> 
+      <div className="main-content">
         <Outlet />
       </div>
     )}
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
 				path: "/signup",
 				element: <SignupFormPage />,
 			},
+			{
+				path: "/setter-transfers",
+				element: <SetterTransferPage />
+			}
 		],
 	},
 ]);

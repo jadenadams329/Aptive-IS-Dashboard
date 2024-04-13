@@ -1,0 +1,28 @@
+.tableFixHead table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+  }
+
+  .tableFixHead th,
+  .tableFixHead td {
+    padding: 6px 18px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+  }
+
+  .tableFixHead td {
+    font-size: 15px;
+  }
+
+
+.tableFixHead {
+    overflow-y: auto;
+    height: 750px;
+  }
+
+  .tableFixHead thead th {
+    position: sticky;
+    top: 0;
+    background-color: #eee;
+  }

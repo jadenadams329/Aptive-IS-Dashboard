@@ -10,15 +10,17 @@ body, html {
 }
 
 
-h1, h2, h3 {
+h1, h2, h3, th {
   font-family: "Playfair Display", serif;
 }
 
-p, span, button, li, label, input, select {
+p, span, button, li, label, input, select, td {
   font-family: "Manrope", sans-serif;
 }
 
 .main-content {
-    margin-left: 250px; /* Adjust this value to match the sidebar width */
-    padding: 20px; /* Add padding for spacing around the content */
+    margin-left: 250px;
+    padding: 20px; 
+    background-color: #e9e9e9;
+    height: 100vh;
   }
