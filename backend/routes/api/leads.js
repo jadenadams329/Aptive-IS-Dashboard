@@ -40,7 +40,7 @@ router.get("/:leadId", requireAuth, async (req, res, next) => {
 });
 
 //Update lead by leadId
-router.put("/:leadId", requireAuth, validateLead, async (req, res, next) => {
+router.put("/:leadId", requireAuth, async (req, res, next) => {
 	try {
 		const { setterId, closerId, name, address, zipCode, phoneNumber, email, notes, disposition } = req.body;
 		const leadId = req.params.leadId;
@@ -77,11 +77,11 @@ router.put("/:leadId", requireAuth, validateLead, async (req, res, next) => {
 			id: updateLead.id,
 			setterId,
 			Setter: {
-				name: setter.firstName,
+				firstName: setter.firstName,
 			},
 			closerId,
 			Closer: {
-				name: closer.firstName || "None",
+				firstName: closer.firstName || "None",
 			},
 			name,
 			address,
@@ -163,7 +163,7 @@ router.post("/", requireAuth, validateLead, async (req, res, next) => {
 			id: newLead.id,
 			setterId: newLead.setterId,
 			Setter: {
-				name: user.firstName,
+				firstName: user.firstName,
 			},
 			closerId: null,
 			name,

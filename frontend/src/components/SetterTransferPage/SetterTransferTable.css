@@ -1,28 +1,73 @@
 .tableFixHead table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0 10px;
-  }
+	width: 100%;
+	border-collapse: collapse;
+}
 
-  .tableFixHead th,
-  .tableFixHead td {
-    padding: 6px 18px;
-    border-bottom: 1px solid #ddd;
-    text-align: left;
-  }
+.tableFixHead th,
+.tableFixHead td {
+	border-bottom: 1px solid #ddd;
+	text-align: left;
+	padding: 15px 10px 15px 10px;
+}
 
-  .tableFixHead td {
-    font-size: 15px;
-  }
+.tableFixHead td {
+	font-size: small;
+	vertical-align: center;
+	height: 70px;
+}
 
 
+#trash:hover {
+	color: red;
+	border-bottom: 1px solid red;
+}
 .tableFixHead {
-    overflow-y: auto;
-    height: 750px;
-  }
+	overflow-y: auto;
+	height: 600px;
+}
 
-  .tableFixHead thead th {
-    position: sticky;
-    top: 0;
-    background-color: #eee;
-  }
+.tableFixHead thead  {
+	position: sticky;
+	top: 0;
+	background-color: #0D210F;
+	color: white;
+}
+
+.mButtonsContainer {
+	display: flex;
+	justify-content: center;
+	gap: 25px;
+}
+
+.mButtonsContainer button {
+	border: none;
+	background-color: white;
+	cursor: pointer;
+}
+
+.mButtonsContainer button:hover {
+	color: #309c42;
+	border-bottom: 1px solid #309c42;
+}
+
+.mButtonsContainer .unclaim:hover {
+	color: red;
+	border-bottom: 1px solid red;
+}
+
+#dispColumn{
+	min-width: 167px;
+}
+
+#nameColumn{
+	min-width: 150px;
+}
+
+#action{
+	border-right: 1px solid #ddd;
+}
+
+#notes{
+	font-size: small;
+
+}

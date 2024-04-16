@@ -2,48 +2,108 @@ import "./SetterTransferTable.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { deleteLead } from "../../store/leads";
-import { getAllLeads } from "../../store/leads";
-import Spinner from "../Spinner/Spinner"
+import { getAllLeads, editLead } from "../../store/leads";
+import Spinner from "../Spinner/Spinner";
+import OpenModalButton from "../OpenModalButton/OpenModalButton";
+import UpdateLeadModal from "../UpdateLeadModal/UpdateLeadModal";
 
 function SetterTransferTable({ user }) {
-    const dispatch = useDispatch();
-    const leadState = useSelector(state => state.leads.data)
-    const isLoading = useSelector(state => state.leads.isLoading)
-    const leads = Object.values(leadState)
-    const [deleted, setDeleted] = useState(false);
+	const dispatch = useDispatch();
+	const leadState = useSelector((state) => state.leads.data);
+	const isLoading = useSelector((state) => state.leads.isLoading);
+	const leads = Object.values(leadState);
+	const [deleted, setDeleted] = useState(false);
+	const [claimed, setClaimed] = useState(false);
+	const [editingLeadId, setEditingLeadId] = useState(null);
+	const [selectedDisposition, setSelectedDisposition] = useState("Transferred - Closer");
 
-    useEffect(() => {
-        dispatch(getAllLeads());
-    }, [dispatch, deleted]);
+	useEffect(() => {
+		dispatch(getAllLeads());
+	}, [dispatch]);
 
-    if(isLoading){
-        return <Spinner />
-    }
+	if (isLoading) {
+		return <Spinner />;
+	}
 
-    const handleDelete = (leadId) => {
-        dispatch(deleteLead(leadId)).then(() => {
-            setDeleted(!deleted);
-        });
-    };
+	const handleDelete = (leadId) => {
+		dispatch(deleteLead(leadId)).then(() => {
+			setDeleted(!deleted);
+		});
+	};
+
+	const handleClaim = (lead, user) => {
+		lead.closerId = user.id;
+		dispatch(editLead(lead, lead.id)).then(() => {
+			setClaimed(!claimed);
+		});
+	};
+
+	const handleUnclaim = (lead) => {
+		lead.closerId = null;
+		dispatch(editLead(lead, lead.id)).then(() => {
+			setClaimed(!claimed);
+		});
+	};
+
+	const handleCloserDisposition = (lead) => {
+		setEditingLeadId(null);
+		lead.disposition = selectedDisposition;
+		dispatch(editLead(lead, lead.id)).then(() => {
+			setSelectedDisposition("Transferred - Closer");
+		});
+	};
 
 	const renderButtons = (lead) => {
-		if (!user) return <i className="fa-solid fa-ban"></i>;
+		let editButton;
 
-		if (user.role === "manager") {
-			return (
-				<>
-					<button>Claim</button>
-					<button><i className="fa-regular fa-pen-to-square"></i></button>
-					<button onClick={() => handleDelete(lead.id)}><i className="fa-solid fa-trash"></i></button>
-				</>
-			);
-		} else if (user.role === "closer" && !lead.closerId) {
-			return <button>Claim</button>;
-		} else if (user.role === "setter" && lead.setterId === user.id) {
-			return <button><i className="fa-regular fa-pen-to-square"></i></button>;
-		} else {
-            return <i className="fa-solid fa-ban"></i>;
-        }
+		if (user) {
+			if (user.role === "manager" || (user.role === "setter" && lead.setterId === user.id)) {
+				editButton = (
+					<OpenModalButton
+						buttonText={<i className='fa-regular fa-pen-to-square'></i>}
+						modalComponent={<UpdateLeadModal lead={lead} user={user} />}
+					/>
+				);
+			}
+
+			if (user.role === "manager") {
+				return (
+					<>
+						{editButton && editButton}
+						<button id='trash' onClick={() => handleDelete(lead.id)}>
+							<i className='fa-solid fa-trash'></i>
+						</button>
+					</>
+				);
+			} else if (user.role === "closer" && !lead.closerId) {
+				return (
+					<button onClick={() => handleClaim(lead, user)}>
+						<i className='fa-solid fa-user-plus'></i>
+					</button>
+				);
+			} else if (user.role === "closer" && lead.closerId === user.id) {
+				if (editingLeadId === lead.id) {
+					return (
+						<button onClick={() => handleCloserDisposition(lead)}>
+							<i className='fa-regular fa-floppy-disk'></i>
+						</button>
+					);
+				} else {
+					return (
+						<>
+							<button onClick={() => setEditingLeadId(lead.id)}>
+								<i className='fa-regular fa-pen-to-square'></i>
+							</button>
+							<button onClick={() => handleUnclaim(lead)} className='unclaim'>
+								<i className='fa-solid fa-user-xmark'></i>
+							</button>
+						</>
+					);
+				}
+			} else if (user.role === "setter" && lead.setterId === user.id) {
+				return <>{editButton && editButton}</>;
+			}
+		}
 	};
 
 	return (
@@ -52,28 +112,43 @@ function SetterTransferTable({ user }) {
 				<table>
 					<thead>
 						<tr>
-							<th>Action</th>
-							<th>Setter</th>
-							<th>Sales Rep</th>
-							<th>Disposition</th>
-							<th>Lead Name</th>
-							<th>Phone</th>
-							<th>Address</th>
+							<th>Actions</th>
+							<th id='setterColumn'>Setter</th>
+							<th id='closerColumn'>Closer</th>
+							<th id='dispColumn'>Disposition</th>
+							<th id='nameColumn'>Name</th>
+							<th id='phoneColumn'>Phone</th>
 							<th>Notes</th>
 						</tr>
 					</thead>
 					<tbody>
 						{leads &&
-							leads.map((lead) => (
-								<tr key={lead.id}>
-									<td>{renderButtons(lead)}</td>
-									<td>{lead.Setter ? lead.Setter.firstName : "N/A"}</td>
+							leads.map((lead, index) => (
+								<tr key={lead.id} style={{ backgroundColor: index % 2 === 0 ? '#f2f2f2' : 'white' }}>
+									<td id='action'>
+										<div className='mButtonsContainer'>{renderButtons(lead)}</div>
+									</td>
+									<td>{lead.Setter && lead.Setter.firstName}</td>
 									<td>{lead.Closer ? lead.Closer.firstName : "N/A"}</td>
-									<td>{lead.disposition && lead.disposition}</td>
+									<td>
+										{editingLeadId === lead.id ? (
+											<select value={selectedDisposition} onChange={(e) => setSelectedDisposition(e.target.value)}>
+												<option value='Transferred - Closer'>Transferred - Closer</option>
+												<option value='Sold'>Sold</option>
+												<option value='Not Interested'>Not Interested</option>
+												<option value='One Time Wasp'>One Time Wasp</option>
+												<option value='Scheduled Callback'>Scheduled Callback</option>
+												<option value='Unqualified'>Unqualified</option>
+											</select>
+										) : (
+											lead.disposition && lead.disposition
+										)}
+									</td>
 									<td>{lead.name && lead.name}</td>
 									<td>{lead.phoneNumber && lead.phoneNumber}</td>
-									<td>{lead.address && lead.zipCode && lead.address + ", " + lead.zipCode}</td>
-									<td>{lead.notes && lead.notes}</td>
+									<td id='notes'>
+										{lead.zipCode && lead.address + ", " + lead.zipCode + ", " + (lead.notes && lead.notes)}
+									</td>
 								</tr>
 							))}
 					</tbody>

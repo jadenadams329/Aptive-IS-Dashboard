@@ -18,14 +18,14 @@ function Layout() {
 	}, [dispatch]);
 
 	return (
-    <>
-    <Navigation isLoaded={isLoaded} />
-    {isLoaded && (
-      <div className="main-content">
-        <Outlet />
-      </div>
-    )}
-  </>
+		<>
+			<Navigation isLoaded={isLoaded} />
+			{isLoaded && (
+				<div className='main-content'>
+					<Outlet />
+				</div>
+			)}
+		</>
 	);
 }
 
@@ -47,8 +47,8 @@ const router = createBrowserRouter([
 			},
 			{
 				path: "/setter-transfers",
-				element: <SetterTransferPage />
-			}
+				element: <SetterTransferPage />,
+			},
 		],
 	},
 ]);
