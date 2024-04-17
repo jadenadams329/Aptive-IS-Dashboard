@@ -16,6 +16,9 @@ module.exports = (sequelize, DataTypes) => {
 				foreignKey: "closerId",
 				as: "Closer",
 			});
+			Lead.hasMany(models.Sale_Details, {
+				foreignKey: "leadId",
+			});
 		}
 
 		static async getAllLeads() {
@@ -32,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
 						as: "Closer",
 						attributes: ["firstName", "lastName"],
 						where: { id: sequelize.col("Lead.closerId") },
-						required: false
+						required: false,
 					},
 				],
 			});
@@ -47,18 +50,18 @@ module.exports = (sequelize, DataTypes) => {
 						as: "Setter",
 						attributes: ["firstName", "lastName"],
 						where: { id: sequelize.col("Lead.setterId") },
-						required: false
+						required: false,
 					},
 					{
 						model: sequelize.models.User,
 						as: "Closer",
 						attributes: ["firstName", "lastName"],
 						where: { id: sequelize.col("Lead.closerId") },
-						required: false
+						required: false,
 					},
 				],
-			})
-			return lead
+			});
+			return lead;
 		}
 	}
 

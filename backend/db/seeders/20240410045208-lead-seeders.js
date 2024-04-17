@@ -34,7 +34,7 @@ module.exports = {
 					phoneNumber: "6196267403",
 					email: "",
 					notes: "Ants, Spiders, 123 Fake St, 92084",
-					disposition: "Not Interested",
+					disposition: "Sold",
 				},
 				{
 					setterId: 3,
@@ -45,7 +45,7 @@ module.exports = {
 					phoneNumber: "6196267404",
 					email: "",
 					notes: "Ants, Spiders, 123 Fake St, 92084",
-					disposition: "Unqualified",
+					disposition: "Sold",
 				},
 			],
 			options
