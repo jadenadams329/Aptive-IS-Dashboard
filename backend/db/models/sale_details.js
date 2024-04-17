@@ -12,6 +12,35 @@ module.exports = (sequelize, DataTypes) => {
 				foreignKey: "leadId",
 			});
 		}
+
+		static async getAllSales() {
+			const soldLeads = await Sale_Details.findAll({
+				include: [
+					{
+						model: sequelize.models.Lead,
+						attributes: ["setterId", "closerId"],
+						where: { id: sequelize.col("Sale_Details.leadId") },
+						include: [
+							{
+								model: sequelize.models.User,
+								as: "Setter",
+								attributes: ["firstName", "lastName"],
+								where: { id: sequelize.col("Lead.setterId") },
+							},
+							{
+								model: sequelize.models.User,
+								as: "Closer",
+								attributes: ["firstName", "lastName"],
+								where: { id: sequelize.col("Lead.closerId") },
+								required: false,
+							},
+						],
+					},
+				],
+			});
+
+			return soldLeads;
+		}
 	}
 	Sale_Details.init(
 		{
@@ -53,6 +82,7 @@ module.exports = (sequelize, DataTypes) => {
 			},
 			serviced: {
 				type: DataTypes.ENUM("Yes", "No", "Pending"),
+				
 			},
 		},
 		{

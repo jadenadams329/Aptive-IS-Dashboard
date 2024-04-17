@@ -56,6 +56,7 @@ module.exports = {
 				serviced: {
 					type: Sequelize.ENUM("Yes", "No", "Pending"),
 					allowNull: false,
+					defaultValue: "Pending"
 				},
 				createdAt: {
 					allowNull: false,
