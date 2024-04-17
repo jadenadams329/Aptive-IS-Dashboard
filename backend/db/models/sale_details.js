@@ -25,13 +25,13 @@ module.exports = (sequelize, DataTypes) => {
 								model: sequelize.models.User,
 								as: "Setter",
 								attributes: ["firstName", "lastName"],
-								where: { id: sequelize.col("Lead.setterId") },
+								// where: { id: sequelize.col("Lead.setterId") },
 							},
 							{
 								model: sequelize.models.User,
 								as: "Closer",
 								attributes: ["firstName", "lastName"],
-								where: { id: sequelize.col("Lead.closerId") },
+								// where: { id: sequelize.col("Lead.closerId") },
 								required: false,
 							},
 						],
@@ -82,7 +82,7 @@ module.exports = (sequelize, DataTypes) => {
 			},
 			serviced: {
 				type: DataTypes.ENUM("Yes", "No", "Pending"),
-				
+
 			},
 		},
 		{
