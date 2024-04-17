@@ -1,0 +1,20 @@
+@media screen and (min-width: 975px) {
+  .stp{
+    display: flex;
+    justify-content: center;
+    background-color: rgb(233, 233, 233);
+    height: 100vh;
+
+  }
+}
+
+.stpContainer {
+	box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14),
+		0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+	background-color: white;
+	border-radius: 7px;
+  max-width: 1100px;
+  height: min-content;
+  margin-top: 25px;
+  margin-left: 25px;
+}

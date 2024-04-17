@@ -3,13 +3,13 @@
 
 let options = {};
 if (process.env.NODE_ENV === "production") {
-	options.schema = process.env.SCHEMA; // define your schema in options object
+	options.schema = process.env.SCHEMA;
 }
 
 module.exports = {
 	async up(queryInterface, Sequelize) {
 		await queryInterface.createTable(
-			"Users",
+			"Sale_Details",
 			{
 				id: {
 					allowNull: false,
@@ -17,31 +17,46 @@ module.exports = {
 					primaryKey: true,
 					type: Sequelize.INTEGER,
 				},
-				username: {
-					type: Sequelize.STRING(50),
-					allowNull: true,
-					unique: true,
-				},
-				email: {
-					type: Sequelize.STRING(256),
-					allowNull: false,
-					unique: true,
-				},
-				hashedPassword: {
-					type: Sequelize.STRING.BINARY,
+				leadId: {
+					type: Sequelize.INTEGER,
 					allowNull: false,
 				},
-				firstName: {
-					type: Sequelize.STRING(30),
+				accountNumber: {
+					type: Sequelize.STRING,
 					allowNull: false,
 				},
-				lastName: {
-					type: Sequelize.STRING(30),
+				agreementLength: {
+					type: Sequelize.INTEGER,
 					allowNull: false,
 				},
-				role: {
-					type: Sequelize.ENUM("manager", "closer", "setter"),
+				planType: {
+					type: Sequelize.ENUM("Basic", "Pro", "Premium"),
 					allowNull: false,
+				},
+				initialPrice: {
+					type: Sequelize.INTEGER,
+					allowNull: false,
+				},
+				recurringPrice: {
+					type: Sequelize.INTEGER,
+					allowNull: false,
+				},
+				autopay: {
+					type: Sequelize.BOOLEAN,
+					allowNull: false,
+				},
+				ach: {
+					type: Sequelize.BOOLEAN,
+					allowNull: false,
+				},
+				initialDate: {
+					type: Sequelize.DATE,
+					allowNull: false,
+				},
+				serviced: {
+					type: Sequelize.ENUM("Yes", "No", "Pending"),
+					allowNull: false,
+					defaultValue: "Pending"
 				},
 				createdAt: {
 					allowNull: false,
@@ -57,9 +72,8 @@ module.exports = {
 			options
 		);
 	},
-
 	async down(queryInterface, Sequelize) {
-		options.tableName = "Users";
-		return queryInterface.dropTable(options);
+		options.tableName = "Sale_Details";
+		await queryInterface.dropTable(options);
 	},
 };

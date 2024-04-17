@@ -33,7 +33,7 @@ const validateSignup = [
   ];
 
 // Sign up
-router.post("/", validateSignup ,async (req, res) => {
+router.post("/", validateSignup, async (req, res) => {
 	const { email, password, firstName, lastName, role } = req.body;
 	const hashedPassword = bcrypt.hashSync(password);
 	const user = await User.create({ email, hashedPassword, firstName, lastName, role });

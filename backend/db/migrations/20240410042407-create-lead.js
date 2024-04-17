@@ -9,7 +9,7 @@ if (process.env.NODE_ENV === "production") {
 module.exports = {
 	async up(queryInterface, Sequelize) {
 		await queryInterface.createTable(
-			"Users",
+			"Leads",
 			{
 				id: {
 					allowNull: false,
@@ -17,30 +17,47 @@ module.exports = {
 					primaryKey: true,
 					type: Sequelize.INTEGER,
 				},
-				username: {
-					type: Sequelize.STRING(50),
+				setterId: {
+					type: Sequelize.INTEGER,
 					allowNull: true,
-					unique: true,
+				},
+				closerId: {
+					type: Sequelize.INTEGER,
+					allowNull: true,
+				},
+				name: {
+					type: Sequelize.STRING(60),
+					allowNull: false,
+				},
+				address: {
+					type: Sequelize.STRING(255),
+					allowNull: true,
+				},
+				zipCode: {
+					type: Sequelize.STRING(5),
+					allowNull: false,
+				},
+				phoneNumber: {
+					type: Sequelize.STRING(11),
+					allowNull: false,
 				},
 				email: {
-					type: Sequelize.STRING(256),
-					allowNull: false,
-					unique: true,
+					type: Sequelize.STRING(100),
+					allowNull: true,
 				},
-				hashedPassword: {
-					type: Sequelize.STRING.BINARY,
-					allowNull: false,
-				},
-				firstName: {
-					type: Sequelize.STRING(30),
+				notes: {
+					type: Sequelize.STRING(1000),
 					allowNull: false,
 				},
-				lastName: {
-					type: Sequelize.STRING(30),
-					allowNull: false,
-				},
-				role: {
-					type: Sequelize.ENUM("manager", "closer", "setter"),
+				disposition: {
+					type: Sequelize.ENUM(
+						"Transferred - Closer",
+						"Sold",
+						"Not Interested",
+						"One Time Wasp",
+						"Scheduled Callback",
+						"Unqualified"
+					),
 					allowNull: false,
 				},
 				createdAt: {
@@ -57,9 +74,8 @@ module.exports = {
 			options
 		);
 	},
-
 	async down(queryInterface, Sequelize) {
-		options.tableName = "Users";
-		return queryInterface.dropTable(options);
+		options.tableName = "Leads";
+		await queryInterface.dropTable(options);
 	},
 };

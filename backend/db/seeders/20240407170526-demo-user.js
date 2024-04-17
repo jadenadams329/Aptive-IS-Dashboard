@@ -11,6 +11,8 @@ if (process.env.NODE_ENV === 'production') {
 
 module.exports = {
   async up (queryInterface, Sequelize) {
+    options.tableName = "Users";
+		options.validate = true;
     await User.bulkCreate([
       {
         email: 'manager@goaptive.com',
@@ -33,7 +35,7 @@ module.exports = {
         lastName: 'Aptive',
         role: 'setter'
       }
-    ], { validate: true })
+    ], options)
   },
 
   async down (queryInterface, Sequelize) {
