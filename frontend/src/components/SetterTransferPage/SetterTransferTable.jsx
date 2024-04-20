@@ -6,6 +6,8 @@ import { getAllLeads, editLead } from "../../store/leads";
 import Spinner from "../Spinner/Spinner";
 import OpenModalButton from "../OpenModalButton/OpenModalButton";
 import UpdateLeadModal from "../UpdateLeadModal/UpdateLeadModal";
+import NewSaleForm from "../NewSaleForm/NewSaleForm";
+import { useModal } from '../../context/Modal';
 
 function SetterTransferTable({ user }) {
 	const dispatch = useDispatch();
@@ -16,6 +18,7 @@ function SetterTransferTable({ user }) {
 	const [claimed, setClaimed] = useState(false);
 	const [editingLeadId, setEditingLeadId] = useState(null);
 	const [selectedDisposition, setSelectedDisposition] = useState("Transferred - Closer");
+	const { setModalContent } = useModal();
 
 	useEffect(() => {
 		dispatch(getAllLeads());
@@ -47,9 +50,14 @@ function SetterTransferTable({ user }) {
 
 	const handleCloserDisposition = (lead) => {
 		setEditingLeadId(null);
+
 		lead.disposition = selectedDisposition;
 		dispatch(editLead(lead, lead.id)).then(() => {
-			setSelectedDisposition("Transferred - Closer");
+			if(selectedDisposition === 'Sold') {
+				setModalContent(
+					<NewSaleForm lead={lead}/>
+				);
+			}
 		});
 	};
 

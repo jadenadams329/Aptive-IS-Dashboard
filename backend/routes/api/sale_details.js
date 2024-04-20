@@ -6,20 +6,31 @@ const { handleValidationErrors } = require("../../utils/validation");
 
 const router = express.Router();
 
+//get sales by current user
+router.get("/user-sales", requireAuth, async (req, res, next) => {
+	try {
+		const { user } = req;
+		const userSales = await Sale_Details.getUserSales(user.id);
+		return res.json(userSales);
+	} catch (err) {
+		next(err);
+	}
+});
+
 //delete a sale by saleId
 router.delete("/:id", requireAuth, async (req, res, next) => {
-    try {
-        const {user} = req
-        const saleId = req.params.id
+	try {
+		const { user } = req;
+		const saleId = req.params.id;
 
-        if (user.role === "setter") {
-            const err = new Error("Forbidden - Only a manager or closer can delete a sale");
+		if (user.role === "setter") {
+			const err = new Error("Forbidden - Only a manager or closer can delete a sale");
 			err.title = "Unauthorized";
 			err.status = 403;
 			return next(err);
-        }
+		}
 
-        //check to see if sale exists
+		//check to see if sale exists
 		const saleDetails = await Sale_Details.findByPk(saleId);
 
 		if (!saleDetails) {
@@ -29,16 +40,15 @@ router.delete("/:id", requireAuth, async (req, res, next) => {
 			return next(err);
 		}
 
-        await saleDetails.destroy();
+		await saleDetails.destroy();
 
-        return res.json({
+		return res.json({
 			message: "Successfully deleted",
 		});
-
-    } catch (err) {
-        next(err)
-    }
-})
+	} catch (err) {
+		next(err);
+	}
+});
 
 //update sale by saleId
 router.put("/:id", requireAuth, async (req, res, next) => {

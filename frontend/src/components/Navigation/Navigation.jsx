@@ -6,6 +6,7 @@ import * as sessionActions from "../../store/session";
 function Navigation({ isLoaded }) {
 	const sessionUser = useSelector((state) => state.session.user);
 	const dispatch = useDispatch();
+	console.log(sessionUser);
 
 	const logout = (e) => {
 		e.preventDefault();
@@ -35,10 +36,9 @@ function Navigation({ isLoaded }) {
 				{sessionUser && <p style={{ color: "white", fontWeight: "100" }}>Welcome, {sessionUser.firstName}</p>}
 
 				<nav className='nav-menu'>
-					{sessionUser && (
-						<NavLink to='/setter-transfers' exact activeClassName='active'>
-							Setter Transfers
-						</NavLink>
+					{sessionUser && <NavLink to='/setter-transfers'>Setter Transfers</NavLink>}
+					{sessionUser && (sessionUser.role === "closer" || sessionUser.role === "manager") && (
+						<NavLink to='/sales-tracker'>Sales Tracker</NavLink>
 					)}
 				</nav>
 			</div>

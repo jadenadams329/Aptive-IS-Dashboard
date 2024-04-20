@@ -41,6 +41,33 @@ module.exports = (sequelize, DataTypes) => {
 
 			return soldLeads;
 		}
+
+		static async getUserSales(userId) {
+			const userSales = await Sale_Details.findAll({
+				where: { "$Lead.closerId$": userId },
+				include: [
+					{
+						model: sequelize.models.Lead,
+						attributes: ["setterId", "closerId"],
+						where: { id: sequelize.col("Sale_Details.leadId") },
+						include: [
+							{
+								model: sequelize.models.User,
+								as: "Setter",
+								attributes: ["firstName", "lastName"],
+							},
+							{
+								model: sequelize.models.User,
+								as: "Closer",
+								attributes: ["firstName", "lastName"],
+								required: false,
+							},
+						],
+					},
+				],
+			});
+			return userSales
+		}
 	}
 	Sale_Details.init(
 		{
@@ -82,7 +109,6 @@ module.exports = (sequelize, DataTypes) => {
 			},
 			serviced: {
 				type: DataTypes.ENUM("Yes", "No", "Pending"),
-
 			},
 		},
 		{

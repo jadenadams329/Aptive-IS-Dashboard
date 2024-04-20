@@ -6,6 +6,7 @@ import SignupFormPage from "./components/SignUpFormPage/SignUpFormPage";
 import Navigation from "./components/Navigation/Navigation";
 import * as sessionActions from "./store/session";
 import SetterTransferPage from "./components/SetterTransferPage/SetterTransferPage";
+import SalesTrackerPage from "./components/SalesTrackerPage/SalesTrackerPage";
 
 function Layout() {
 	const dispatch = useDispatch();
@@ -49,6 +50,10 @@ const router = createBrowserRouter([
 				path: "/setter-transfers",
 				element: <SetterTransferPage />,
 			},
+			{
+				path: "/sales-tracker",
+				element: <SalesTrackerPage />
+			}
 		],
 	},
 ]);
