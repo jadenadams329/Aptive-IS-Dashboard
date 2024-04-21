@@ -2,8 +2,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import Spinner from "../Spinner/Spinner";
 import { deleteSale, getUserSales } from "../../store/userSales";
-import { useModal } from "../../context/Modal";
 import OpenModalButton from "../OpenModalButton/OpenModalButton";
+import UpdateSaleModal from "../UpdateSaleModal/UpdateSaleModal";
 
 function SalesTrackerTable({ user }) {
 	const dispatch = useDispatch();
@@ -73,7 +73,7 @@ function SalesTrackerTable({ user }) {
 											<div className='mButtonsContainer'>
 												<OpenModalButton
 													buttonText={<i className='fa-regular fa-pen-to-square'></i>}
-													modalComponent={<h2>Edit Sale</h2>}
+													modalComponent={<UpdateSaleModal sale={sale} />}
 												/>
 												<button id='trash' onClick={() => handleDelete(sale.id)}>
 													<i className='fa-solid fa-trash'></i>

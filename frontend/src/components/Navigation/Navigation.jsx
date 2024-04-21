@@ -1,16 +1,18 @@
 import "./Navigation.css";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import * as sessionActions from "../../store/session";
+
 
 function Navigation({ isLoaded }) {
 	const sessionUser = useSelector((state) => state.session.user);
 	const dispatch = useDispatch();
-	console.log(sessionUser);
+	let navigate = useNavigate();
 
 	const logout = (e) => {
 		e.preventDefault();
 		dispatch(sessionActions.logout());
+		navigate("/")
 	};
 
 	const sessionLinks = sessionUser ? (
