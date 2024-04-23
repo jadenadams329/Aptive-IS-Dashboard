@@ -6,6 +6,19 @@
     height: 100vh;
 
   }
+  .stpContainer{
+
+  }
+  .topStp{
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 5px;
+  }
+  .stpSearch{
+    width: 250px;
+    padding: 0px 5px;
+  }
+
 }
 
 .stpContainer {

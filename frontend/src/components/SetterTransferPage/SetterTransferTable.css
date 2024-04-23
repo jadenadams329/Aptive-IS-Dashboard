@@ -41,7 +41,7 @@
 
 .mButtonsContainer button {
 	border: none;
-	background-color: white;
+	background-color: inherit;
 	cursor: pointer;
 }
 
