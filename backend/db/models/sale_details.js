@@ -19,24 +19,23 @@ module.exports = (sequelize, DataTypes) => {
 					{
 						model: sequelize.models.Lead,
 						attributes: ["setterId", "closerId"],
-						where: { id: sequelize.col("Sale_Details.leadId") },
 						include: [
 							{
 								model: sequelize.models.User,
 								as: "Setter",
 								attributes: ["firstName", "lastName"],
-								// where: { id: sequelize.col("Lead.setterId") },
+
 							},
 							{
 								model: sequelize.models.User,
 								as: "Closer",
 								attributes: ["firstName", "lastName"],
-								// where: { id: sequelize.col("Lead.closerId") },
 								required: false,
 							},
 						],
 					},
 				],
+				order: [['initialDate', 'ASC']],
 			});
 
 			return soldLeads;
@@ -44,12 +43,12 @@ module.exports = (sequelize, DataTypes) => {
 
 		static async getUserSales(userId) {
 			const userSales = await Sale_Details.findAll({
-				where: { "$Lead.closerId$": userId },
+				// where: {},
 				include: [
 					{
 						model: sequelize.models.Lead,
 						attributes: ["setterId", "closerId"],
-						where: { id: sequelize.col("Sale_Details.leadId") },
+						where: { closerId: userId },
 						include: [
 							{
 								model: sequelize.models.User,
@@ -65,8 +64,9 @@ module.exports = (sequelize, DataTypes) => {
 						],
 					},
 				],
+				order: [['initialDate', 'ASC']],
 			});
-			return userSales
+			return userSales;
 		}
 	}
 	Sale_Details.init(
