@@ -1,3 +1,14 @@
+@keyframes modalOpen {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
 #modal {
     position: fixed;
     top: 0;
@@ -15,10 +26,11 @@
     right: 0;
     left: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.895);
   }
 
   #modal-content {
     position: absolute;
     background-color: white;
+    animation: modalOpen 0.3s ease-out;
   }

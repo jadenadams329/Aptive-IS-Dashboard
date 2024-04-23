@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { createLead } from "../../store/leads";
 import { useModal } from "../../context/Modal";
+import "./NewLeadForm.css";
 
 function NewLeadForm() {
 	const dispatch = useDispatch();
@@ -28,46 +29,60 @@ function NewLeadForm() {
 			const data = await res.json();
 			if (data) {
 				setErrors(data.errors);
-                return errors
+				return errors;
 			}
 		}
 	};
 
 	return (
 		<>
-			<div>
-				<h2>Create a new lead</h2>
+			<h2 className='nlHeader'>Create a new lead</h2>
+			<div className='formContainer'>
 				<form onSubmit={handleSubmit}>
-					<div>
-						<label>Name</label>
-						<input type='text' value={name} onChange={(e) => setName(e.target.value)} required></input>
+					<div className='nlFormContainer'>
+						<div className='nlSection'>
+							<label>Name</label>
+							<input type='text' value={name} onChange={(e) => setName(e.target.value)} required></input>
+						</div>
+						<div className='nlSection'>
+							<label>Phone Number</label>
+							<input
+								id='phone'
+								type='number'
+								value={phoneNumber}
+								onChange={(e) => setPhoneNumber(e.target.value)}
+								required
+							></input>
+							{errors.phoneNumber && <p className='error'>{errors.phoneNumber}</p>}
+						</div>
+						<div className='addZip'>
+							<div className='nlSection' id='address'>
+								<label>Address</label>
+								<input type='text' value={address} onChange={(e) => setAddress(e.target.value)}></input>
+							</div>
+							<div className='nlSection' id='zip'>
+								<label>Zip Code</label>
+								<input type='number' value={zipCode} onChange={(e) => setZipCode(e.target.value)} required></input>
+								{errors.zipCode && <p className='error'>{errors.zipCode}</p>}
+							</div>
+						</div>
+
+						<div className='nlSection'>
+							<label>Notes</label>
+							<textarea
+								type='text'
+								value={notes}
+								onChange={(e) => setNotes(e.target.value)}
+								required
+								rows='4'
+								cols='50'
+								style={{ backgroundColor: "rgb(232, 232, 232)", border: "none", padding: "3px 10px", resize: "none" }}
+							></textarea>
+						</div>
+						<button className='formSubmit' type='submit'>
+							Submit
+						</button>
 					</div>
-					<div>
-						<label>Address</label>
-						<input type='text' value={address} onChange={(e) => setAddress(e.target.value)}></input>
-					</div>
-					<div>
-						<label>Zip Code</label>
-						<input type='number' value={zipCode} onChange={(e) => setZipCode(e.target.value)} required></input>
-                        {errors.zipCode && <p>{errors.zipCode}</p>}
-					</div>
-					<div>
-						<label>Phone Number</label>
-						<input type='number' value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} required></input>
-                        {errors.phoneNumber && <p>{errors.phoneNumber}</p>}
-					</div>
-					<div>
-						<label>Notes</label>
-						<textarea
-							type='text'
-							value={notes}
-							onChange={(e) => setNotes(e.target.value)}
-							required
-							rows='4'
-							cols='50'
-						></textarea>
-					</div>
-					<button type='submit'>Submit</button>
 				</form>
 			</div>
 		</>

@@ -1,0 +1,68 @@
+.nlHeader{
+    text-align: center;
+    margin-top: 5px;
+}
+
+.formContainer {
+    padding: 0px 15px 15px 15px;
+}
+
+.nlFormContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.nlSection{
+    display: flex;
+    flex-direction: column;
+}
+
+.nlSection input {
+    padding: 2px 10px;
+    height: 30px;
+    background-color: rgb(232, 232, 232);
+    border: none;
+}
+
+.addZip{
+    display: flex;
+    justify-content: space-between;
+}
+
+#address{
+    width: 65%;
+}
+
+#zip{
+    width: 30%;
+}
+
+#phone{
+    width: 50%;
+}
+
+
+.formSubmit{
+    background-color: #344C38;
+    border: 1px solid #344C38;
+    color: white;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.3s ease, border 0.3s ease;
+    margin-top: 10px;
+}
+
+.formSubmit:hover{
+    background-color: #309C42;
+    border: 1px solid black;
+    transition: background-color 0.3s ease, border 0.3s ease;
+}
+
+.dispositionForm{
+    padding-left: 5px;
+    width: 40%;
+    height: 30px;
+    background-color: rgb(232, 232, 232);
+}

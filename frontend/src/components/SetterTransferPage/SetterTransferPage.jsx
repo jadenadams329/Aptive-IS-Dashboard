@@ -12,7 +12,7 @@ function SetterTransferPage() {
 			<div className='stp'>
 				<div className='stpContainer'>
 					<div className="topStp">
-						<OpenModalButton buttonText='Create Lead' modalComponent={<NewLeadForm />} />
+						<OpenModalButton cssClass={true} buttonText='Create Lead' modalComponent={<NewLeadForm />} />
 						<input
 						className="stpSearch"
 						type='text'
