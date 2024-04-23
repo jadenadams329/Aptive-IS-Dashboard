@@ -11,7 +11,14 @@ function SetterTransferPage() {
 		<>
 			<div className='stp'>
 				<div className='stpContainer'>
-					<OpenModalButton buttonText='Create Lead' modalComponent={<NewLeadForm />} />
+					<div className="topStp">
+						<OpenModalButton cssClass={true} buttonText='Create Lead' modalComponent={<NewLeadForm />} />
+						<input
+						className="stpSearch"
+						type='text'
+						placeholder='Search...'
+					/>
+					</div>
 					<SetterTransferTable user={sessionUser} />
 				</div>
 			</div>

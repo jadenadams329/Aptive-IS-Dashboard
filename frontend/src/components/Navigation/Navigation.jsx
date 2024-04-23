@@ -1,15 +1,18 @@
 import "./Navigation.css";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import * as sessionActions from "../../store/session";
+
 
 function Navigation({ isLoaded }) {
 	const sessionUser = useSelector((state) => state.session.user);
 	const dispatch = useDispatch();
+	let navigate = useNavigate();
 
 	const logout = (e) => {
 		e.preventDefault();
 		dispatch(sessionActions.logout());
+		navigate("/")
 	};
 
 	const sessionLinks = sessionUser ? (
@@ -35,10 +38,9 @@ function Navigation({ isLoaded }) {
 				{sessionUser && <p style={{ color: "white", fontWeight: "100" }}>Welcome, {sessionUser.firstName}</p>}
 
 				<nav className='nav-menu'>
-					{sessionUser && (
-						<NavLink to='/setter-transfers' exact activeClassName='active'>
-							Setter Transfers
-						</NavLink>
+					{sessionUser && <NavLink to='/setter-transfers'>Setter Transfers</NavLink>}
+					{sessionUser && (sessionUser.role === "closer" || sessionUser.role === "manager") && (
+						<NavLink to='/sales-tracker'>Sales Tracker</NavLink>
 					)}
 				</nav>
 			</div>

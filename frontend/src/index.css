@@ -18,6 +18,17 @@ p, span, button, li, label, input, select, td, th, a {
   margin-left: 250px;
 }
 
+.error{
+  color: red;
+  font-size: smaller;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 @media screen and (max-width: 850px) {
   .sidebar {
       display: none; /* Hide the sidebar on smaller screens */
