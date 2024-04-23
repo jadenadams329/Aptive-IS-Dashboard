@@ -1,11 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Spinner from "../Spinner/Spinner";
 import { deleteSale, getUserSales } from "../../store/userSales";
 import OpenModalButton from "../OpenModalButton/OpenModalButton";
 import UpdateSaleModal from "../UpdateSaleModal/UpdateSaleModal";
 
-function SalesTrackerTable({ user }) {
+function SalesTrackerTable() {
 	const dispatch = useDispatch();
 	const userSales = useSelector((state) => state.userSales.data);
 	const isLoading = useSelector((state) => state.userSales.isLoading);
