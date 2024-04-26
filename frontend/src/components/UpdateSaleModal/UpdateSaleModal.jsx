@@ -70,146 +70,151 @@ function UpdateSaleModal({ sale }) {
 	};
 	return (
 		<>
-			<div>
-				<h2>Edit Sale Details</h2>
+			<h2 className='nlHeader'>Edit Sale Details</h2>
+			<div className='formContainer'>
 				<form onSubmit={handleSubmit}>
-					<div>
-						<label>Account Number</label>
-						<input
-							type='number'
-							value={accountNumber}
-							onChange={(e) => setAccountNumber(e.target.value)}
-							required
-						></input>
-					</div>
-					<div>
-						<label>Agreement Length</label>
-						<div>
+					<div className="nsFormContainer">
+						<div className="nlSection">
+							<label>Account Number</label>
 							<input
-								type='radio'
-								id='oneYear'
-								name='agreement'
-								value='12'
-								checked={agreementLength == "12"}
-								onChange={(e) => setAgreementLength(e.target.value)}
+								type='number'
+								value={accountNumber}
+								onChange={(e) => setAccountNumber(e.target.value)}
 								required
-							/>
-							<label htmlFor='oneYear'>1 year</label>
+							></input>
 						</div>
 						<div>
-							<input
-								type='radio'
-								id='twoYears'
-								name='agreement'
-								value='24'
-								checked={agreementLength == "24"}
-								onChange={(e) => setAgreementLength(e.target.value)}
-							/>
-							<label htmlFor='twoYears'>2 years</label>
+							<label id="label">Agreement Length</label>
+							<div>
+								<input
+									type='radio'
+									id='oneYear'
+									name='agreement'
+									value='12'
+									checked={agreementLength == "12"}
+									onChange={(e) => setAgreementLength(e.target.value)}
+									required
+								/>
+								<label htmlFor='oneYear'>1 year</label>
+							</div>
+							<div>
+								<input
+									type='radio'
+									id='twoYears'
+									name='agreement'
+									value='24'
+									checked={agreementLength == "24"}
+									onChange={(e) => setAgreementLength(e.target.value)}
+								/>
+								<label htmlFor='twoYears'>2 years</label>
+							</div>
 						</div>
-					</div>
-					<div>
-						<label>Plan Type</label>
 						<div>
+							<label id="label">Plan Type</label>
+							<div>
+								<input
+									type='radio'
+									id='basic'
+									name='plan'
+									value='Basic'
+									checked={planType === "Basic"}
+									onChange={(e) => setPlanType(e.target.value)}
+									required
+								/>
+								<label htmlFor='basic'>Basic</label>
+							</div>
+							<div>
+								<input
+									type='radio'
+									id='pro'
+									name='plan'
+									value='Pro'
+									checked={planType === "Pro"}
+									onChange={(e) => setPlanType(e.target.value)}
+								/>
+								<label htmlFor='pro'>Pro</label>
+							</div>
+							<div>
+								<input
+									type='radio'
+									id='premium'
+									name='plan'
+									value='Premium'
+									checked={planType === "Premium"}
+									onChange={(e) => setPlanType(e.target.value)}
+								/>
+								<label htmlFor='premium'>Premium</label>
+							</div>
+						</div>
+						<div className="nlSection">
+							<label>Initial Price</label>
 							<input
-								type='radio'
-								id='basic'
-								name='plan'
-								value='Basic'
-								checked={planType === "Basic"}
-								onChange={(e) => setPlanType(e.target.value)}
+								id="initialPrice"
+								type='number'
+								value={initialPrice}
+								onChange={(e) => setInitialPrice(e.target.value)}
 								required
-							/>
-							<label htmlFor='basic'>Basic</label>
+							></input>
 						</div>
-						<div>
+						<div className="nlSection">
+							<label>Recurring Price</label>
 							<input
-								type='radio'
-								id='pro'
-								name='plan'
-								value='Pro'
-								checked={planType === "Pro"}
-								onChange={(e) => setPlanType(e.target.value)}
-							/>
-							<label htmlFor='pro'>Pro</label>
-						</div>
-						<div>
-							<input
-								type='radio'
-								id='premium'
-								name='plan'
-								value='Premium'
-								checked={planType === "Premium"}
-								onChange={(e) => setPlanType(e.target.value)}
-							/>
-							<label htmlFor='premium'>Premium</label>
-						</div>
-					</div>
-					<div>
-						<label>Initial Price</label>
-						<input
-							type='number'
-							value={initialPrice}
-							onChange={(e) => setInitialPrice(e.target.value)}
-							required
-						></input>
-					</div>
-					<div>
-						<label>Recurring Price</label>
-						<input
-							type='number'
-							value={recurringPrice}
-							onChange={(e) => setRecurringPrice(e.target.value)}
-							required
-						></input>
-					</div>
-					<div>
-						<label>Autopay</label>
-						<div>
-							<input
-								type='radio'
-								id='none'
-								name='autopay'
-								value='None'
-								checked={payment === "None"}
-								onChange={(e) => setPayment(e.target.value)}
+								id="recurringPrice"
+								type='number'
+								value={recurringPrice}
+								onChange={(e) => setRecurringPrice(e.target.value)}
 								required
-							/>
-							<label htmlFor='none'>None</label>
+							></input>
 						</div>
 						<div>
-							<input
-								type='radio'
-								id='creditCard'
-								name='autopay'
-								value='Credit Card'
-								checked={payment === "Credit Card"}
-								onChange={(e) => setPayment(e.target.value)}
-							/>
-							<label htmlFor='creditCard'>Credit Card</label>
+							<label id="label">Autopay</label>
+							<div>
+								<input
+									type='radio'
+									id='none'
+									name='autopay'
+									value='None'
+									checked={payment === "None"}
+									onChange={(e) => setPayment(e.target.value)}
+									required
+								/>
+								<label htmlFor='none'>None</label>
+							</div>
+							<div>
+								<input
+									type='radio'
+									id='creditCard'
+									name='autopay'
+									value='Credit Card'
+									checked={payment === "Credit Card"}
+									onChange={(e) => setPayment(e.target.value)}
+								/>
+								<label htmlFor='creditCard'>Credit Card</label>
+							</div>
+							<div>
+								<input
+									type='radio'
+									id='ach'
+									name='autopay'
+									value='ACH'
+									checked={payment === "ACH"}
+									onChange={(e) => setPayment(e.target.value)}
+								/>
+								<label htmlFor='ach'>ACH</label>
+							</div>
 						</div>
-						<div>
+						<div className="nlSection">
+							<label>Initial Service Date</label>
 							<input
-								type='radio'
-								id='ach'
-								name='autopay'
-								value='ACH'
-								checked={payment === "ACH"}
-								onChange={(e) => setPayment(e.target.value)}
-							/>
-							<label htmlFor='ach'>ACH</label>
+								id="initialDate"
+								type='date'
+								value={initialServiceDate}
+								onChange={(e) => setInitialServiceDate(e.target.value)}
+								required
+							></input>
 						</div>
+						<button className='formSubmit' type='submit'>Submit</button>
 					</div>
-					<div>
-						<label>Initial Service Date</label>
-						<input
-							type='date'
-							value={initialServiceDate}
-							onChange={(e) => setInitialServiceDate(e.target.value)}
-							required
-						></input>
-					</div>
-					<button type='submit'>Submit</button>
 				</form>
 			</div>
 		</>

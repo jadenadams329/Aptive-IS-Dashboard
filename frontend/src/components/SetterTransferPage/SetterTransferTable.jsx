@@ -9,6 +9,7 @@ import UpdateLeadModal from "../UpdateLeadModal/UpdateLeadModal";
 import NewSaleForm from "../NewSaleForm/NewSaleForm";
 import { useModal } from '../../context/Modal';
 
+
 function SetterTransferTable({ user }) {
 	const dispatch = useDispatch();
 	const leadState = useSelector((state) => state.leads.data);

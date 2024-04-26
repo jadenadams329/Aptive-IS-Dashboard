@@ -23,6 +23,11 @@
     height: 30px;
     background-color: rgb(232, 232, 232);
     border: none;
+
+}
+
+.nlSection label{
+    font-weight: 600;
 }
 
 .addZip{
