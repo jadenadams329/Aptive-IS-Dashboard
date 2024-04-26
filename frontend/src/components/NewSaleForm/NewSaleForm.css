@@ -1,0 +1,23 @@
+.nsFormContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 350px;
+    margin-top: 10px;
+}
+
+#initialPrice{
+    width: 50%;
+}
+
+#recurringPrice{
+    width: 50%;
+}
+
+#initialDate{
+    width: 50%;
+}
+
+#label{
+    font-weight: 600;
+}

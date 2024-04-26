@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { createBrowserRouter, RouterProvider, Outlet, useNavigate } from "react-router-dom";
 import LoginFormPage from "./components/LoginFormPage/LoginFormPage";
 import SignupFormPage from "./components/SignUpFormPage/SignUpFormPage";
 import Navigation from "./components/Navigation/Navigation";
@@ -10,6 +10,8 @@ import SalesTrackerPage from "./components/SalesTrackerPage/SalesTrackerPage";
 
 function Layout() {
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
+	const sessionUser = useSelector(state => state.session.user);
 	const [isLoaded, setIsLoaded] = useState(false);
 
 	useEffect(() => {
@@ -17,6 +19,12 @@ function Layout() {
 			setIsLoaded(true);
 		});
 	}, [dispatch]);
+
+	useEffect(() => {
+		if (isLoaded && !sessionUser) {
+			navigate('/login');
+		} 
+	}, [isLoaded, sessionUser, navigate]);
 
 	return (
 		<>
