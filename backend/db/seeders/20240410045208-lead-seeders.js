@@ -22,7 +22,7 @@ module.exports = {
 					zipCode: "92084",
 					phoneNumber: "6196267403",
 					email: "",
-					notes: "Ants, Spiders, 123 Fake St, 92084",
+					notes: "Ants, Spiders",
 					disposition: "Sold",
 				},
 				{
@@ -33,7 +33,7 @@ module.exports = {
 					zipCode: "92084",
 					phoneNumber: "6196267403",
 					email: "",
-					notes: "Ants, Spiders, 123 Fake St, 92084",
+					notes: "Ants, Spiders",
 					disposition: "Sold",
 				},
 				{
@@ -44,7 +44,7 @@ module.exports = {
 					zipCode: "92081",
 					phoneNumber: "6196267404",
 					email: "",
-					notes: "Ants, Spiders, 123 Fake St, 92084",
+					notes: "Ants, Spiders",
 					disposition: "Sold",
 				},
 			],
