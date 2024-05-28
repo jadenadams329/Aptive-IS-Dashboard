@@ -1,21 +1,147 @@
 // Import environment variables
-require('dotenv').config();
+require("dotenv").config();
+const { createServer } = require("http");
+const WebSocket = require("ws");
 
-const { port } = require('../config');
+const { port } = require("../config");
 
-const app = require('../app');
-const db = require('../db/models');
+const app = require("../app");
+const db = require("../db/models");
+const server = createServer(app);
+const wss = new WebSocket.Server({ server });
 
 // Check the database connection before starting the app
 db.sequelize
-  .authenticate()
-  .then(() => {
-    console.log('Database connection success! Sequelize is ready to use...');
+	.authenticate()
+	.then(() => {
+		console.log("Database connection success! Sequelize is ready to use...");
+		wss.on("connection", (ws) => {
+			ws.on("message", (jsonData) => {
+				processingIncomingMessage(jsonData, ws);
+			});
 
-    // Start listening for connections
-    app.listen(port, () => console.log(`Listening on port ${port}...`));
-  })
-  .catch((err) => {
-    console.log('Database connection failure.');
-    console.error(err);
-  });
+			ws.on("close", (e) => {
+				console.log(e);
+			});
+		});
+
+		// Start listening for connections
+		server.listen(port, () => console.log(`Listening on port ${port}...`));
+	})
+	.catch((err) => {
+		console.log("Database connection failure.");
+		console.error(err);
+	});
+
+const processingIncomingMessage = (jsonData, ws) => {
+	console.log(`Processing incoming message: ${jsonData}`);
+	const message = JSON.parse(jsonData);
+
+	if (!message.type) {
+		console.error("Error: Message does not have a type");
+		return;
+	}
+
+	console.log(`Message type: ${message.type}`);
+
+	switch (message.type) {
+		case "delete-lead":
+			console.log("Deleting Lead.....");
+			deleteLead(message.data);
+			break;
+
+		case "claim-lead":
+			console.log(`Claiming lead.....`);
+			claimLead(message.data);
+			break;
+
+		default:
+			console.error(`Unhandled message type: ${message.type}`);
+	}
+};
+
+const deleteLead = async (leadId, ws) => {
+	try {
+		const result = await db.Lead.destroy({
+			where: { id: leadId },
+		});
+
+		if (result) {
+			console.log(`Lead with id ${leadId} has been deleted.`);
+			const deleteLeadFromClients = {
+				type: "delete-lead-from-clients",
+				data: leadId,
+			};
+			const data = JSON.stringify(deleteLeadFromClients);
+
+			console.log(`Sending message to clients to delete lead: ${data}`);
+
+			wss.clients.forEach((client) => {
+				if (client.readyState === WebSocket.OPEN) {
+					client.send(data);
+				}
+			});
+		} else {
+			console.log(`Lead with id ${leadId} does not exist.`);
+		}
+	} catch (error) {
+		console.error(`Error deleting lead with id ${leadId}: `, error);
+	}
+};
+
+const claimLead = async (lead, ws) => {
+  try {
+    const claimed = await db.Lead.update(
+      {
+        closerId: lead.closerId,
+      },
+      { where: { id: lead.id } }
+    );
+
+    if (claimed) {
+      console.log(`Lead has been updated with a new closer lol`);
+
+      const setter = await db.User.findByPk(lead.setterId);
+      let closer = {};
+      if (lead.closerId) {
+        closer = await db.User.findByPk(lead.closerId);
+      }
+
+      const safeLead = {
+        id: lead.id,
+        setterId: lead.setterId,
+        Setter: {
+          firstName: setter.firstName,
+        },
+        closerId: lead.closerId,
+        Closer: {
+          firstName: closer.firstName || "None",
+        },
+        name: lead.name,
+        address: lead.address,
+        zipCode: lead.zipCode,
+        phoneNumber: lead.phoneNumber,
+        email: lead.email,
+        notes: lead.notes,
+        disposition: lead.disposition,
+      };
+
+      const claimedLead = {
+        type: 'lead-claimed',
+        data: safeLead
+      }
+
+      const data = JSON.stringify(claimedLead);
+
+      console.log(`Sending message to clients to claim lead: ${data}`);
+
+      wss.clients.forEach((client) => {
+        if (client.readyState === WebSocket.OPEN) {
+          client.send(data);
+        }
+      });
+    }
+  } catch (err) {
+    console.error(`Error claiming lead with id ${lead.id}: `, err);
+  }
+};

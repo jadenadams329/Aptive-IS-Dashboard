@@ -1,14 +1,13 @@
 import "./SetterTransferTable.css";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
-import { deleteLead } from "../../store/leads";
+import { useEffect, useState, useRef } from "react";
+import { deleteLead, removeLead, updateLead } from "../../store/leads";
 import { getAllLeads, editLead } from "../../store/leads";
 import Spinner from "../Spinner/Spinner";
 import OpenModalButton from "../OpenModalButton/OpenModalButton";
 import UpdateLeadModal from "../UpdateLeadModal/UpdateLeadModal";
 import NewSaleForm from "../NewSaleForm/NewSaleForm";
-import { useModal } from '../../context/Modal';
-
+import { useModal } from "../../context/Modal";
 
 function SetterTransferTable({ user }) {
 	const dispatch = useDispatch();
@@ -20,27 +19,91 @@ function SetterTransferTable({ user }) {
 	const [editingLeadId, setEditingLeadId] = useState(null);
 	const [selectedDisposition, setSelectedDisposition] = useState("Transferred - Closer");
 	const { setModalContent } = useModal();
+	const webSocket = useRef(null);
 
 	useEffect(() => {
 		dispatch(getAllLeads());
 	}, [dispatch]);
+
+	useEffect(() => {
+		if (!leads) {
+			return;
+		}
+		const ws = new WebSocket("ws://localhost:8000");
+
+		ws.onopen = (e) => {
+			console.log(`Connection open: ${e}`);
+		};
+
+		ws.onmessage = (e) => {
+			const data = JSON.parse(e.data);
+
+			if (data?.type === "delete-lead-from-clients") {
+				handleIncomingDelete(data);
+			}
+			if (data?.type === "lead-claimed") {
+				handleIncomingClaimedLead(data)
+			}
+		};
+
+		ws.onerror = (e) => {
+			console.error(`${e}`);
+		};
+
+		ws.onclose = (e) => {
+			console.log(`Connection closed: ${e}`);
+		};
+
+		webSocket.current = ws;
+
+		return function cleanUp() {
+			if (webSocket.current !== null) {
+				webSocket.current.close();
+			}
+		};
+	}, [leads]);
 
 	if (isLoading) {
 		return <Spinner />;
 	}
 
 	const handleDelete = (leadId) => {
-		dispatch(deleteLead(leadId)).then(() => {
-			setDeleted(!deleted);
+		const deleteLead = JSON.stringify({
+			type: "delete-lead",
+			data: leadId,
 		});
+
+		console.log(`Deleting lead from all clients: ${deleteLead}`);
+		webSocket.current.send(deleteLead);
+		// dispatch(deleteLead(leadId)).then(() => {
+		// 	setDeleted(!deleted);
+		// });
+	};
+
+	const handleIncomingDelete = (message) => {
+		console.log(`Deleting lead now...${message.data}`);
+		dispatch(removeLead(message.data));
+		setDeleted(!deleted);
 	};
 
 	const handleClaim = (lead, user) => {
 		lead.closerId = user.id;
-		dispatch(editLead(lead, lead.id)).then(() => {
-			setClaimed(!claimed);
-		});
+		const claimedLead = JSON.stringify({
+			type: 'claim-lead',
+			data: lead
+		})
+		console.log(`${user.id} claiming lead ${lead.id}`)
+		webSocket.current.send(claimedLead)
+		// dispatch(editLead(lead, lead.id)).then(() => {
+		// 	setClaimed(!claimed);
+		// });
 	};
+
+	const handleIncomingClaimedLead = (message) => {
+		console.log(`${message.data.closerId} claimed a lead`)
+		dispatch(updateLead(message.data))
+		setClaimed(!claimed)
+	}
 
 	const handleUnclaim = (lead) => {
 		lead.closerId = null;
@@ -54,10 +117,8 @@ function SetterTransferTable({ user }) {
 
 		lead.disposition = selectedDisposition;
 		dispatch(editLead(lead, lead.id)).then(() => {
-			if(selectedDisposition === 'Sold') {
-				setModalContent(
-					<NewSaleForm lead={lead}/>
-				);
+			if (selectedDisposition === "Sold") {
+				setModalContent(<NewSaleForm lead={lead} />);
 			}
 		});
 	};
@@ -133,7 +194,7 @@ function SetterTransferTable({ user }) {
 					<tbody>
 						{leads &&
 							leads.map((lead, index) => (
-								<tr key={lead.id} style={{ backgroundColor: index % 2 === 0 ? '#f2f2f2' : 'white' }}>
+								<tr key={lead.id} style={{ backgroundColor: index % 2 === 0 ? "#f2f2f2" : "white" }}>
 									<td id='action'>
 										<div className='mButtonsContainer'>{renderButtons(lead)}</div>
 									</td>
