@@ -2,7 +2,7 @@ import "./SetterTransferTable.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState, useRef } from "react";
 import { removeLead, updateLead } from "../../store/leads";
-import { getAllLeads, editLead } from "../../store/leads";
+import { getAllLeads } from "../../store/leads";
 import Spinner from "../Spinner/Spinner";
 import OpenModalButton from "../OpenModalButton/OpenModalButton";
 import UpdateLeadModal from "../UpdateLeadModal/UpdateLeadModal";
@@ -42,11 +42,15 @@ function SetterTransferTable({ user }) {
 				handleIncomingDelete(data);
 			}
 			if (data?.type === "lead-claimed") {
-				handleIncomingClaimedLead(data)
+				handleIncomingClaimedLead(data);
 			}
 			if (data?.type === "lead-unclaimed") {
-				handleIncomingUnclaimedLead(data)
+				handleIncomingUnclaimedLead(data);
 			}
+			if (data?.type === 'lead-dispositioned') {
+				handleIncomingDisposition(data);
+			}
+
 		};
 
 		ws.onerror = (e) => {
@@ -92,30 +96,30 @@ function SetterTransferTable({ user }) {
 	const handleClaim = (lead, user) => {
 		lead.closerId = user.id;
 		const claimedLead = JSON.stringify({
-			type: 'claim-lead',
-			data: lead
-		})
-		console.log(`${user.id} claiming lead ${lead.id}`)
-		webSocket.current.send(claimedLead)
+			type: "claim-lead",
+			data: lead,
+		});
+		console.log(`${user.id} claiming lead ${lead.id}`);
+		webSocket.current.send(claimedLead);
 		// dispatch(editLead(lead, lead.id)).then(() => {
 		// 	setClaimed(!claimed);
 		// });
 	};
 
 	const handleIncomingClaimedLead = (message) => {
-		console.log(`${message.data.closerId} claimed a lead`)
-		dispatch(updateLead(message.data))
-		setClaimed(!claimed)
-	}
+		console.log(`${message.data.closerId} claimed a lead`);
+		dispatch(updateLead(message.data));
+		setClaimed(!claimed);
+	};
 
 	const handleUnclaim = (lead) => {
 		lead.closerId = null;
 		const unclaimedLead = JSON.stringify({
-			type: 'unclaim-lead',
-			data: lead
-		})
-		console.log(`${user.id} is unclaiming lead ${lead.id}`)
-		webSocket.current.send(unclaimedLead)
+			type: "unclaim-lead",
+			data: lead,
+		});
+		console.log(`${user.id} is unclaiming lead ${lead.id}`);
+		webSocket.current.send(unclaimedLead);
 
 		// dispatch(editLead(lead, lead.id)).then(() => {
 		// 	setClaimed(!claimed);
@@ -123,21 +127,33 @@ function SetterTransferTable({ user }) {
 	};
 
 	const handleIncomingUnclaimedLead = (message) => {
-		console.log(`${message.data.closerId} unclaimed a lead`)
-		dispatch(updateLead(message.data))
-		setClaimed(!claimed)
-	}
+		console.log(`${message.data.closerId} unclaimed a lead`);
+		dispatch(updateLead(message.data));
+		setClaimed(!claimed);
+	};
 
 	const handleCloserDisposition = (lead) => {
 		setEditingLeadId(null);
 
 		lead.disposition = selectedDisposition;
-		dispatch(editLead(lead, lead.id)).then(() => {
-			if (selectedDisposition === "Sold") {
-				setModalContent(<NewSaleForm lead={lead} />);
-			}
+		const closerDisposition = JSON.stringify({
+			type: "disposition-lead",
+			data: lead,
 		});
+		console.log(`${user.id} is dispositioning lead ${lead.id}`);
+		webSocket.current.send(closerDisposition);
+		if (selectedDisposition === "Sold") {
+			setModalContent(<NewSaleForm lead={lead} />);
+		}
+		// dispatch(editLead(lead, lead.id)).then(() => {
+		//
+		// });
 	};
+
+	const handleIncomingDisposition = (message) => {
+		console.log(`${message.data.closerId} dispositioned a lead`);
+		dispatch(updateLead(message.data));
+	}
 
 	const renderButtons = (lead) => {
 		let editButton;

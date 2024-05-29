@@ -59,6 +59,11 @@ const processingIncomingMessage = (jsonData, ws) => {
 			console.log("Unclaiming lead...")
 			unclaimLead(message.data)
 			break;
+			
+		case "disposition-lead":
+			console.log("Dispositioning lead...")
+			dispositionLead(message.data)
+			break;
 
 		default:
 			console.error(`Unhandled message type: ${message.type}`);
@@ -196,6 +201,61 @@ const unclaimLead = async (lead, ws) => {
 		const data = JSON.stringify(unclaimedLead);
 
 		console.log(`Sending message to clients to claim lead: ${data}`);
+
+		wss.clients.forEach((client) => {
+		  if (client.readyState === WebSocket.OPEN) {
+			client.send(data);
+		  }
+		});
+	  }
+	} catch (err) {
+	  console.error(`Error unclaiming lead with id ${lead.id}: `, err);
+	}
+  };
+
+  const dispositionLead = async (lead, ws) => {
+	try {
+	  const disposition = await db.Lead.update(
+		{
+		  disposition: lead.disposition,
+		},
+		{ where: { id: lead.id } }
+	  );
+
+	  if (disposition) {
+		console.log(`Lead has been dispositioned lol`);
+
+		const setter = await db.User.findByPk(lead.setterId);
+		let closer = {};
+		if (lead.closerId) {
+		  closer = await db.User.findByPk(lead.closerId);
+		}
+
+		const safeLead = {
+		  id: lead.id,
+		  setterId: lead.setterId,
+		  Setter: {
+			firstName: setter.firstName,
+		  },
+		  closerId: lead.closerId,
+		  Closer: {
+			firstName: closer.firstName || "None",
+		  },
+		  name: lead.name,
+		  address: lead.address,
+		  zipCode: lead.zipCode,
+		  phoneNumber: lead.phoneNumber,
+		  email: lead.email,
+		  notes: lead.notes,
+		  disposition: lead.disposition,
+		};
+
+		const dispositionedLead = {
+		  type: 'lead-dispositioned',
+		  data: safeLead
+		}
+
+		const data = JSON.stringify(dispositionedLead);
 
 		wss.clients.forEach((client) => {
 		  if (client.readyState === WebSocket.OPEN) {
