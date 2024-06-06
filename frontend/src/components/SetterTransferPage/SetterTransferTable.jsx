@@ -29,39 +29,47 @@ function SetterTransferTable({ user }) {
 		if (!leads) {
 			return;
 		}
-		const ws = new WebSocket("ws://localhost:8000");
 
-		ws.onopen = (e) => {
-			console.log(`Connection open: ${e}`);
+		const fetchWebSocketUrl = async () => {
+			const response = await fetch("/api/config/ws-url");
+			const data = await response.json();
+			const wsUrl = data.wsUrl;
+
+			const ws = new WebSocket(wsUrl);
+
+			ws.onopen = (e) => {
+				console.log(`Connection open: ${e}`);
+			};
+
+			ws.onmessage = (e) => {
+				const data = JSON.parse(e.data);
+
+				if (data?.type === "delete-lead-from-clients") {
+					handleIncomingDelete(data);
+				}
+				if (data?.type === "lead-claimed") {
+					handleIncomingClaimedLead(data);
+				}
+				if (data?.type === "lead-unclaimed") {
+					handleIncomingUnclaimedLead(data);
+				}
+				if (data?.type === "lead-dispositioned") {
+					handleIncomingDisposition(data);
+				}
+			};
+
+			ws.onerror = (e) => {
+				console.error(`${e}`);
+			};
+
+			ws.onclose = (e) => {
+				console.log(`Connection closed: ${e}`);
+			};
+
+			webSocket.current = ws;
 		};
 
-		ws.onmessage = (e) => {
-			const data = JSON.parse(e.data);
-
-			if (data?.type === "delete-lead-from-clients") {
-				handleIncomingDelete(data);
-			}
-			if (data?.type === "lead-claimed") {
-				handleIncomingClaimedLead(data);
-			}
-			if (data?.type === "lead-unclaimed") {
-				handleIncomingUnclaimedLead(data);
-			}
-			if (data?.type === 'lead-dispositioned') {
-				handleIncomingDisposition(data);
-			}
-
-		};
-
-		ws.onerror = (e) => {
-			console.error(`${e}`);
-		};
-
-		ws.onclose = (e) => {
-			console.log(`Connection closed: ${e}`);
-		};
-
-		webSocket.current = ws;
+		fetchWebSocketUrl();
 
 		return function cleanUp() {
 			if (webSocket.current !== null) {
@@ -153,7 +161,7 @@ function SetterTransferTable({ user }) {
 	const handleIncomingDisposition = (message) => {
 		console.log(`${message.data.closerId} dispositioned a lead`);
 		dispatch(updateLead(message.data));
-	}
+	};
 
 	const renderButtons = (lead) => {
 		let editButton;
