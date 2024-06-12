@@ -20,8 +20,6 @@ module.exports = (sequelize, DataTypes) => {
 				},
 			});
 
-			console.log(userGoals, "akljsdfja;slkfj;alskjf;laskjdf;lajsd;flkja;sldjkf;laskjdfl;kjasd;lfkj")
-
 			return userGoals;
 		}
 	}
