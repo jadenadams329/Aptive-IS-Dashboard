@@ -4,13 +4,15 @@ import sessionReducer from './session';
 import leadsReducer from './leads';
 import salesReducer from './saleDetails';
 import userSalesReducer from './userSales';
+import goalsReducer from './goals';
 
 const rootReducer = combineReducers({
   // ADD REDUCERS HERE
   session: sessionReducer,
   leads: leadsReducer,
   sales: salesReducer,
-  userSales: userSalesReducer
+  userSales: userSalesReducer,
+  goals: goalsReducer
 });
 
 let enhancer;
