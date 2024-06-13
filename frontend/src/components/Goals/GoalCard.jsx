@@ -1,3 +1,5 @@
+import GoalProgress from "./GoalProgress"
+
 function GoalCard({goal}) {
 
   return (
@@ -6,7 +8,7 @@ function GoalCard({goal}) {
             <h3>{goal && goal.name}</h3>
         </div>
         <div>
-            {/* //progress goes here */}
+            <GoalProgress goal={goal}/>
         </div>
         <div>
             Days left
