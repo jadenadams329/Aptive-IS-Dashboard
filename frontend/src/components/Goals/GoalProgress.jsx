@@ -124,7 +124,7 @@ function GoalProgress({ goal }) {
 							fill: color,
 						},
 					}}
-					text={({ value, valueMax }) =>
+					text={({ value }) =>
 						gaugeText === "$"
 							? `${gaugeText}${value} `
 							: `${value}${gaugeText} `
