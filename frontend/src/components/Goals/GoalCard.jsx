@@ -6,12 +6,10 @@ function GoalCard({goal}) {
     <div>
         <div>
             <h3>{goal && goal.name}</h3>
+            <p>{goal && `${goal.type}: ${goal.value}`}</p>
         </div>
         <div>
             <GoalProgress goal={goal}/>
-        </div>
-        <div>
-            Days left
         </div>
     </div>
   )
