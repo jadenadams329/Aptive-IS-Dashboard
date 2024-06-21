@@ -1,29 +1,24 @@
 import "./SetterTransferTable.css";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { useState } from "react";
 import { deleteLead } from "../../store/leads";
-import { getAllLeads, editLead } from "../../store/leads";
+import { editLead } from "../../store/leads";
 import Spinner from "../Spinner/Spinner";
 import OpenModalButton from "../OpenModalButton/OpenModalButton";
 import UpdateLeadModal from "../UpdateLeadModal/UpdateLeadModal";
 import NewSaleForm from "../NewSaleForm/NewSaleForm";
-import { useModal } from '../../context/Modal';
+import { useModal } from "../../context/Modal";
 
-
-function SetterTransferTable({ user }) {
+function SetterTransferTable({ user, leads, isLoading }) {
 	const dispatch = useDispatch();
-	const leadState = useSelector((state) => state.leads.data);
-	const isLoading = useSelector((state) => state.leads.isLoading);
-	const leads = Object.values(leadState);
+	// const leadState = useSelector((state) => state.leads.data);
+	// const isLoading = useSelector((state) => state.leads.isLoading);
+	// const leads = Object.values(leadState);
 	const [deleted, setDeleted] = useState(false);
 	const [claimed, setClaimed] = useState(false);
 	const [editingLeadId, setEditingLeadId] = useState(null);
 	const [selectedDisposition, setSelectedDisposition] = useState("Transferred - Closer");
 	const { setModalContent } = useModal();
-
-	useEffect(() => {
-		dispatch(getAllLeads());
-	}, [dispatch]);
 
 	if (isLoading) {
 		return <Spinner />;
@@ -54,10 +49,8 @@ function SetterTransferTable({ user }) {
 
 		lead.disposition = selectedDisposition;
 		dispatch(editLead(lead, lead.id)).then(() => {
-			if(selectedDisposition === 'Sold') {
-				setModalContent(
-					<NewSaleForm lead={lead}/>
-				);
+			if (selectedDisposition === "Sold") {
+				setModalContent(<NewSaleForm lead={lead} />);
 			}
 		});
 	};
@@ -133,7 +126,7 @@ function SetterTransferTable({ user }) {
 					<tbody>
 						{leads &&
 							leads.map((lead, index) => (
-								<tr key={lead.id} style={{ backgroundColor: index % 2 === 0 ? '#f2f2f2' : 'white' }}>
+								<tr key={lead.id} style={{ backgroundColor: index % 2 === 0 ? "#f2f2f2" : "white" }}>
 									<td id='action'>
 										<div className='mButtonsContainer'>{renderButtons(lead)}</div>
 									</td>

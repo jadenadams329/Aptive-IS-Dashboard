@@ -15,8 +15,6 @@ function NewSaleForm({ lead }) {
 	const [payment, setPayment] = useState("");
 	const [initialServiceDate, setInitialServiceDate] = useState("");
 
-	console.log(lead);
-
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		const formData = {
@@ -45,7 +43,7 @@ function NewSaleForm({ lead }) {
 
 		if (formData) {
 			const safeSale = {
-				leadId: lead.id,
+				leadId: lead ? lead.id : null,
 				accountNumber,
 				agreementLength: parseInt(agreementLength),
 				planType,

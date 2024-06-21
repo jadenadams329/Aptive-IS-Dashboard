@@ -20,14 +20,12 @@
     color: #78856E;
     border: none;
     width: 20px;
+    cursor: pointer;
 }
 #dotIcon{
     font-size: larger;
 }
-.dropdown > button:hover {
-    cursor: pointer;
-    color: #309C42;
-}
+
 
 .dropdown {
 	position: relative;
@@ -41,14 +39,12 @@
 	min-width: 160px;
 	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 	z-index: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    gap: 10px;
 }
 
-.dropdown-content a {
-	color: black;
-	padding: 12px 16px;
-	text-decoration: none;
-	display: block;
-}
 
  .gcMiddleSection{
     display: flex;
@@ -68,4 +64,45 @@
 
  .goalValue{
     font-size: larger;
+ }
+
+ .dgContainer{
+    padding: 5px 15px 15px 15px;
+    display: flex;
+    flex-direction: column;
+
+ }
+
+ .dgSection h2{
+    text-align: center;
+    margin-bottom: 10px;
+ }
+
+ .dgSection p{
+    text-align: center;
+ }
+
+ .dgbSection{
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+ }
+
+ .dgbSection button{
+    background-color: #344C38;
+    border: 1px solid #344C38;
+    color: white;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.3s ease, border 0.3s ease;
+    margin-top: 10px;
+    width: 100%;
+ }
+
+ .dgbSection button:hover{
+    background-color: #309C42;
+    border: 1px solid black;
+    transition: background-color 0.3s ease, border 0.3s ease;
  }

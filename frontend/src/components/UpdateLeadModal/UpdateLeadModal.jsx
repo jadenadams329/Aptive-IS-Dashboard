@@ -4,7 +4,6 @@ import { editLead } from "../../store/leads";
 import { useModal } from "../../context/Modal";
 
 function UpdateLeadModal({ lead, user }) {
-	// console.log(lead);
 	const dispatch = useDispatch();
 	const { closeModal } = useModal();
 	const [name, setName] = useState(lead?.name);

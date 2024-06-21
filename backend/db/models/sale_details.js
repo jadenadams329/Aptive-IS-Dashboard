@@ -73,7 +73,7 @@ module.exports = (sequelize, DataTypes) => {
 		{
 			leadId: {
 				type: DataTypes.INTEGER,
-				allowNull: false,
+				allowNull: true,
 			},
 			accountNumber: {
 				type: DataTypes.STRING,

@@ -6,16 +6,22 @@
 }
 
 .gpContainer{
+    width: 100%;
     display: flex;
     flex-direction: column;
     margin: 20px 30px;
     gap: 16px;
+
 }
 
 .gpSection{
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin: 0 25px;
+    margin-bottom: 50px;
+
+
 }
 
 .gcSection{

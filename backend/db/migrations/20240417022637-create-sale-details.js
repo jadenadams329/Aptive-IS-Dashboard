@@ -19,7 +19,7 @@ module.exports = {
 				},
 				leadId: {
 					type: Sequelize.INTEGER,
-					allowNull: false,
+					allowNull: true,
 				},
 				accountNumber: {
 					type: Sequelize.STRING,

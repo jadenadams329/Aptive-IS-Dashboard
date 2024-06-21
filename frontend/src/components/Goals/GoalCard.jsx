@@ -1,6 +1,9 @@
 import GoalProgress from "./GoalProgress";
 import "./GoalCard.css";
 import { useState, useEffect, useRef } from "react";
+import OpenModalButton from "../OpenModalButton/OpenModalButton";
+import DeleteGoalModal from "./DeleteGoalModal";
+import EditGoalModal from "./EditGoalModal";
 
 function GoalCard({ goal }) {
 	const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -8,6 +11,10 @@ function GoalCard({ goal }) {
 
 	const toggleDropdown = () => {
 		setDropdownOpen(!dropdownOpen);
+	};
+
+	const closeDropdown = () => {
+		setDropdownOpen(false);
 	};
 
 	useEffect(() => {
@@ -33,8 +40,22 @@ function GoalCard({ goal }) {
 					</button>
 					{dropdownOpen && (
 						<div className='dropdown-content'>
-							<a href='#'>Edit Goal</a>
-							<a href='#'>Delete Goal</a>
+							<div className="dropDown">
+								<OpenModalButton
+									dropDownCss={true}
+									buttonText={"Edit Goal"}
+									modalComponent={<EditGoalModal goal={goal} />}
+									onButtonClick={closeDropdown}
+								/>
+							</div>
+							<div className="dropDown">
+								<OpenModalButton
+									dropDownCss={true}
+									buttonText={"Delete Goal"}
+									modalComponent={<DeleteGoalModal goal={goal} />}
+									onButtonClick={closeDropdown}
+								/>
+							</div>
 						</div>
 					)}
 				</div>
