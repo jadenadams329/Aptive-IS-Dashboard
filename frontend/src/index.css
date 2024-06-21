@@ -23,6 +23,42 @@ p, span, button, li, label, input, select, td, th, a {
   font-size: smaller;
 }
 
+footer {
+  border-top: black solid 1px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  margin-top: auto;
+}
+
+footer h2 {
+  margin-bottom: 20px;
+}
+
+.developer-container {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.developer {
+  text-align: center;
+}
+
+.fa-brands {
+  font-size: 32px;
+}
+
+.developer a i {
+  color: black;
+  margin: 0 10px;
+  transition: color 0.3s ease;
+}
+.developer a:hover i {
+  color: #808080;
+}
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;

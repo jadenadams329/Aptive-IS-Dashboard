@@ -7,6 +7,7 @@ import Navigation from "./components/Navigation/Navigation";
 import * as sessionActions from "./store/session";
 import SetterTransferPage from "./components/SetterTransferPage/SetterTransferPage";
 import SalesTrackerPage from "./components/SalesTrackerPage/SalesTrackerPage";
+import GoalsPage from "./components/Goals/GoalsPage";
 
 function Layout() {
 	const dispatch = useDispatch();
@@ -23,7 +24,7 @@ function Layout() {
 	useEffect(() => {
 		if (isLoaded && !sessionUser) {
 			navigate('/login');
-		} 
+		}
 	}, [isLoaded, sessionUser, navigate]);
 
 	return (
@@ -61,6 +62,10 @@ const router = createBrowserRouter([
 			{
 				path: "/sales-tracker",
 				element: <SalesTrackerPage />
+			},
+			{
+				path: '/goals',
+				element: <GoalsPage />
 			}
 		],
 	},

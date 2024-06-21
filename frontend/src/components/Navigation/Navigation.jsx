@@ -39,9 +39,10 @@ function Navigation({ isLoaded }) {
 
 				<nav className='nav-menu'>
 					{sessionUser && <NavLink to='/setter-transfers'>Setter Transfers</NavLink>}
-					{sessionUser && (sessionUser.role === "closer" || sessionUser.role === "manager") && (
-						<NavLink to='/sales-tracker'>Sales Tracker</NavLink>
+					{sessionUser && (sessionUser.role === "closer" ) && (
+						<NavLink to='/sales-tracker'>My Sales Tracker</NavLink>
 					)}
+					{sessionUser && (sessionUser.role === "closer") && <NavLink to='/goals'>My Goals</NavLink>}
 				</nav>
 			</div>
 			{isLoaded && <div className='session-links'>{sessionLinks}</div>}

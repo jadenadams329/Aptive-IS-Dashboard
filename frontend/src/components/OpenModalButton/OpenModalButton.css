@@ -8,8 +8,27 @@
     transition: background-color 0.3s ease, border 0.3s ease;
 }
 
+.modalButton:disabled{
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
 .modalButton:hover{
     background-color: #309C42;
     border: 1px solid black;
     transition: background-color 0.3s ease, border 0.3s ease;
+}
+
+
+
+.ddButton{
+    border: none;
+    background-color: #f9f9f9;
+    cursor: pointer;
+    font-size: medium;
+}
+
+.ddButton:hover{
+    color: #309C42;
+    text-decoration: underline;
 }

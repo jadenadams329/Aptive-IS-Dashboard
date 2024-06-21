@@ -41,8 +41,6 @@ function SignupFormPage() {
 		});
 	};
 
-  console.log(role)
-
 	return (
 		<>
 			<div className='formWrapper'>

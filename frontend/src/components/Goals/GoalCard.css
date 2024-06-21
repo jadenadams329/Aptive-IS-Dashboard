@@ -1,0 +1,108 @@
+.gcContainer {
+    width: 250px;
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px;
+}
+
+.gcTopSection{
+    display: flex;
+    justify-content: space-between;
+}
+
+.dropdown > button {
+    background-color: white;
+    color: #78856E;
+    border: none;
+    width: 20px;
+    cursor: pointer;
+}
+#dotIcon{
+    font-size: larger;
+}
+
+
+.dropdown {
+	position: relative;
+	display: inline-block;
+}
+
+.dropdown-content {
+	position: absolute;
+	right: 0;
+	background-color: #f9f9f9;
+	min-width: 160px;
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	z-index: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    gap: 10px;
+}
+
+
+ .gcMiddleSection{
+    display: flex;
+    justify-content: center;
+ }
+
+ .gcBottomSection{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+ }
+
+ .goalType{
+    font-size: medium;
+    font-weight: 600;
+ }
+
+ .goalValue{
+    font-size: larger;
+ }
+
+ .dgContainer{
+    padding: 5px 15px 15px 15px;
+    display: flex;
+    flex-direction: column;
+
+ }
+
+ .dgSection h2{
+    text-align: center;
+    margin-bottom: 10px;
+ }
+
+ .dgSection p{
+    text-align: center;
+ }
+
+ .dgbSection{
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+ }
+
+ .dgbSection button{
+    background-color: #344C38;
+    border: 1px solid #344C38;
+    color: white;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.3s ease, border 0.3s ease;
+    margin-top: 10px;
+    width: 100%;
+ }
+
+ .dgbSection button:hover{
+    background-color: #309C42;
+    border: 1px solid black;
+    transition: background-color 0.3s ease, border 0.3s ease;
+ }
