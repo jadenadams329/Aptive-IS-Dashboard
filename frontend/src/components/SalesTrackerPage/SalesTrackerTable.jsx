@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
+import { format } from "date-fns";
 import Spinner from "../Spinner/Spinner";
 import { deleteSale, getUserSales } from "../../store/userSales";
 import OpenModalButton from "../OpenModalButton/OpenModalButton";
@@ -19,9 +20,9 @@ function SalesTrackerTable() {
 		return <Spinner />;
 	}
 
-    const handleDelete = (saleId) => {
-        dispatch(deleteSale(saleId))
-    }
+	const handleDelete = (saleId) => {
+		dispatch(deleteSale(saleId));
+	};
 
 	return (
 		<>
@@ -37,9 +38,9 @@ function SalesTrackerTable() {
 							<th>CV</th>
 							<th>Length</th>
 							<th>EZ</th>
-							<th>Pay</th>
 							<th>Serviced</th>
 							<th>Date Scheduled</th>
+							<th>Last Updated</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -87,9 +88,9 @@ function SalesTrackerTable() {
 										<td>{cv}</td>
 										<td>{sale.agreementLength}</td>
 										<td>{ez}</td>
-										<td>0</td>
 										<td>{sale.serviced}</td>
-										<td>{sale.initialDate}</td>
+										<td>{format(new Date(sale.initialDate), "MM/dd/yyyy")}</td>
+										<td>{format(new Date(sale.updatedAt), "MM/dd HH:mm")}</td>
 									</tr>
 								);
 							})}
