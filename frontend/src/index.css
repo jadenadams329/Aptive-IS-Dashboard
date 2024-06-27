@@ -27,9 +27,15 @@ footer {
   border-top: black solid 1px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   padding: 20px;
   margin-top: auto;
+
+}
+
+#footerH{
+  font-family: "Manrope", sans-serif;
 }
 
 footer h2 {
