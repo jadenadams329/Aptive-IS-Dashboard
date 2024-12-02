@@ -5,10 +5,10 @@ import Spinner from "../Spinner/Spinner";
 import { deleteSale, getUserSales } from "../../store/userSales";
 import OpenModalButton from "../OpenModalButton/OpenModalButton";
 import UpdateSaleModal from "../UpdateSaleModal/UpdateSaleModal";
-import Table from '@mui/material/Table';
-import TableContainer from '@mui/material/TableContainer';
-import Paper from '@mui/material/Paper';
-import { TableBody, TableCell, TableHead, TableRow } from "@mui/material";
+import Table from "@mui/material/Table";
+import TableContainer from "@mui/material/TableContainer";
+import Paper from "@mui/material/Paper";
+import { DataGrid } from '@mui/x-data-grid';
 
 
 function SalesTrackerTable() {
@@ -29,67 +29,33 @@ function SalesTrackerTable() {
 		dispatch(deleteSale(saleId));
 	};
 
+	const columns = [
+		{ field: "accountNumber", headerName: "Account", type: "number", width: 80, align: "right" },
+		{ field: "planType", headerName: "Plan", width: 80, align: "right" },
+		{ field: "initialPrice", headerName: "Initial", type: "number", width: 60 },
+		{ field: "recurringPrice", headerName: "Recurring", type: "number", width: 80 },
+		// { field: "cv", headerName: "CV", type: "number", width: 70 },
+		{ field: "agreementLength", headerName: "Length", type: "number", width: 60 },
+		// { field: "ez", headerName: "EZ Pay", width: 60 },
+		{ field: "initialDate", headerName: "Date Scheduled", width: 130 },
+		{ field: "serviced", headerName: "Serviced", width: 80 },
+		{ field: "updatedAt", headerName: "Last Updated", width: 130 },
+	];
+
+	const paginationModel = { page: 0, pageSize: 5 };
+
 	return (
 		<>
-			<TableContainer component={Paper} >
-				<Table stickyHeader aria-label="sticky table" >
-					<TableHead>
-						<TableRow>
-							<TableCell align="right">Account</TableCell>
-							<TableCell align="right">Plan</TableCell>
-							<TableCell align="right">Initial</TableCell>
-							<TableCell align="right">Monthly</TableCell>
-							<TableCell align="right">CV</TableCell>
-							<TableCell align="right">Length</TableCell>
-							<TableCell align="right">EZ</TableCell>
-							<TableCell align="right">Date Scheduled</TableCell>
-							<TableCell align="right">Serviced</TableCell>
-							<TableCell align="right">Last Updated</TableCell>
-						</TableRow>
-					</TableHead>
-					<TableBody>
-					{sales &&
-							sales.map((sale, index) => {
-								let cv;
-								let ez;
-								switch (sale.planType) {
-									case "Basic":
-										cv = sale.initialPrice + sale.recurringPrice * 4;
-										break;
-									case "Pro":
-										cv = sale.initialPrice + sale.recurringPrice * 6;
-										break;
-									case "Premium":
-										cv = sale.initialPrice + sale.recurringPrice * 8;
-										break;
-									default:
-										cv = "N/A";
-								}
-								if (sale.autopay && sale.ach) {
-									ez = "ACH";
-								} else if (sale.autopay && !sale.ach) {
-									ez = "CC";
-								} else {
-									ez = "None";
-								}
-								return (
-									<TableRow align="right" key={sale.id}>
-										<TableCell>{sale.accountNumber}</TableCell>
-										<TableCell align="right">{sale.planType}</TableCell>
-										<TableCell align="right">{sale.initialPrice}</TableCell>
-										<TableCell align="right">{sale.recurringPrice}</TableCell>
-										<TableCell align="right">{cv}</TableCell>
-										<TableCell align="right">{sale.agreementLength}</TableCell>
-										<TableCell align="right">{ez}</TableCell>
-										<TableCell align="right">{format(new Date(sale.initialDate), "MM/dd/yyyy")}</TableCell>
-										<TableCell align="right">{sale.serviced}</TableCell>
-										<TableCell align="right">{format(new Date(sale.updatedAt), "MM/dd HH:mm")}</TableCell>
-									</TableRow>
-								);
-							})}
-					</TableBody>
-				</Table>
-			</TableContainer>
+			<Paper sx={{ height: 400, width: "100%" }}>
+				<DataGrid
+					rows={sales}
+					columns={columns}
+					initialState={{ pagination: { paginationModel } }}
+					pageSizeOptions={[5, 10]}
+					checkboxSelection
+					sx={{ border: 0 }}
+				></DataGrid>
+			</Paper>
 
 			{/* <div className='tableFixHead'>
 				<table>
