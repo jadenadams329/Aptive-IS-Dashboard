@@ -8,8 +8,7 @@ import UpdateSaleModal from "../UpdateSaleModal/UpdateSaleModal";
 import Table from "@mui/material/Table";
 import TableContainer from "@mui/material/TableContainer";
 import Paper from "@mui/material/Paper";
-import { DataGrid } from '@mui/x-data-grid';
-
+import { DataGrid } from "@mui/x-data-grid";
 
 function SalesTrackerTable() {
 	const dispatch = useDispatch();
@@ -30,16 +29,72 @@ function SalesTrackerTable() {
 	};
 
 	const columns = [
-		{ field: "accountNumber", headerName: "Account", type: "number", width: 80, align: "right" },
-		{ field: "planType", headerName: "Plan", width: 80, align: "right" },
-		{ field: "initialPrice", headerName: "Initial", type: "number", width: 60 },
-		{ field: "recurringPrice", headerName: "Recurring", type: "number", width: 80 },
-		// { field: "cv", headerName: "CV", type: "number", width: 70 },
-		{ field: "agreementLength", headerName: "Length", type: "number", width: 60 },
-		// { field: "ez", headerName: "EZ Pay", width: 60 },
-		{ field: "initialDate", headerName: "Date Scheduled", width: 130 },
-		{ field: "serviced", headerName: "Serviced", width: 80 },
-		{ field: "updatedAt", headerName: "Last Updated", width: 130 },
+		{ field: "accountNumber", headerName: "Account", type: "number", width: 80, align: "right", headerAlign: "right" },
+		{ field: "planType", headerName: "Plan", width: 100, align: "right", headerAlign: "right" },
+		{ field: "initialPrice", headerName: "Initial", type: "number", align: "right", width: 80, headerAlign: "right" },
+		{ field: "recurringPrice", headerName: "Recurring", type: "number", align: "right", width: 100, headerAlign: "right" },
+		{
+			headerName: "CV",
+			type: "number",
+			width: 70,
+			renderCell: (cellValues) => {
+				const { planType, initialPrice, recurringPrice } = cellValues.row;
+				let cv;
+				switch (planType) {
+					case "Basic":
+						cv = Number(initialPrice) + Number(recurringPrice) * 4;
+						break;
+					case "Pro":
+						cv = Number(initialPrice) + Number(recurringPrice) * 6;
+						break;
+					case "Premium":
+						cv = Number(initialPrice) + Number(recurringPrice) * 8;
+						break;
+					default:
+						cv = "N/A";
+				}
+				return cv;
+			}
+
+		},
+		{ field: "agreementLength", headerName: "Length", type: "number", align: "right", width: 80, headerAlign: "right" },
+		{
+			field: "ez",
+			headerName: "EZ Pay",
+			width: 60,
+			renderCell: (cellValues) => {
+				const { autopay, ach } = cellValues.row;
+				if (autopay && ach) {
+					return "ACH";
+				} else if (autopay && !ach) {
+					return "CC";
+				} else {
+					return "None";
+				}
+			}
+		},
+		{
+			field: "initialDate",
+			headerName: "Date Scheduled",
+			align: "right",
+			width: 160,
+			headerAlign: "right",
+			valueFormatter: (params) => {
+				return format(new Date(params), "MM/dd/yy");
+			}
+		},
+		{ field: "serviced", headerName: "Serviced", width: 100, align: "right", headerAlign: "right" },
+		{
+			field: "updatedAt",
+			headerName: "Last Updated",
+			width: 140,
+			align: 'right',
+			headerAlign: "right",
+			valueFormatter: (params) => {
+				return format(new Date(params), "MM/dd HH:mm");
+			}
+
+		 },
 	];
 
 	const paginationModel = { page: 0, pageSize: 5 };
@@ -53,7 +108,16 @@ function SalesTrackerTable() {
 					initialState={{ pagination: { paginationModel } }}
 					pageSizeOptions={[5, 10]}
 					checkboxSelection
-					sx={{ border: 0 }}
+					sx={{
+						border: 0,
+						"& .MuiDataGrid-columnHeader": {
+							fontWeight: "bold",
+							"& .MuiDataGrid-columnHeaderTitle": {
+								fontWeight: "bold",
+								textAlign: "right",
+							},
+						},
+					}}
 				></DataGrid>
 			</Paper>
 
